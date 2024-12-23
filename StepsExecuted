@@ -1,0 +1,29 @@
+Main Folder --- Java non test case files
+TestsFiles Folder --- main test cases
+-------Main Folder------
+1. Include all required URLS in APIConstants_Common
+2. Prepare a PayloadManager class file for including body request things for serialization
+   and deserialization of POST,GET,PATCH, PUT or delete which ever is required
+3. Create getters and setters for getting required strings from requests using POJO classes by
+   using jsonchematopojo website for various http methods which ever is required, if you require any
+   filed from response then create pojo for it too
+--------Tests Folder----
+4. Create Base Test file which generally includes main URL Part test which is common or first step
+5. Create Assertions file which will include all assertions of required tests
+6. Under Resource folder include files which are required for testing
+7. Under Tests folder create main tests individually and as well integration
+   create a sample folder too which will have templates for basic testing
+
+
+Steps:----
+1. Run the base path from the variable of main url mentioned in base test as base path is diff
+for each http methods
+2. Now give the body parameters from payload manager by creating a variable to hold its value
+and the post method is applied
+3. Now get the response by creating a variable to hold the value to check the status code whether
+it has been created
+4. Now to validate the response call the payload manager deserialization to convert the json
+into java object for this the base test should be used as we have created its instance in it
+5.Testcase file calls --> basetest calls--> payloadmanager calls --> pojo class for response
+6. now use a instance of class to hold its value of response field which is to be validated
+
