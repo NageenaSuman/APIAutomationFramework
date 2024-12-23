@@ -1,6 +1,7 @@
 package org.nageena.TestsFiles.IntegrationTest.Scn3_Scn4_Create_Update_Delete;
 
 import io.qameta.allure.Description;
+import io.restassured.RestAssured;
 import org.nageena.BaseTest.BasicTesting;
 import org.nageena.POJOs.ResponseBooking;
 import org.testng.Assert;
@@ -60,12 +61,29 @@ public class Exe20_12_2024 extends BasicTesting {
             System.out.println("Cant Proceeed");
             Assert.fail("Due to null values cant proceed with deletion");
         }
-        //This would fail as the following id has been already deleted in previous step
+        System.out.println("This would fail as the following id has been" +
+                        " already deleted in previous step");
+        r.basePath(urls.POST_URL + "/" + Booking_id);
         re = r.given().cookie("token", token).delete();
-        vr = re.then().log().all().statusCode(201);
 
+
+        // so get any booking id
+        System.out.println("Getting all bookings");
+        r.basePath(urls.GET_URL);
+        re = r.when().get();
+
+        Integer booking_id = re.then().extract().path("bookingid[0]");
+        System.out.println(booking_id);
+        r.basePath(urls.GET_URL + "/" + booking_id);
+        r.basePath(urls.GET_URL + "/" + booking_id).given().cookie("token", token).delete().then().log().all();
+//
         //verifying it has been deleted
         r.basePath(urls.POST_URL + "/" + Booking_id).get().then().log().all().statusCode(404);
+
+        //trying to update the deleted id which would fail as "Method Not allowed" due to
+        // non existance of booking id
+        r.basePath(urls.POST_URL + "/" + booking_id);
+        r.given().cookie("token", token).body(pm.update_booking()).put().then().log().all();
 
     }
 }
